@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)https://www.freecodecamp.org/news/python-web-scraping-tutorial/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        
+            <title>Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape</title>
+        
+        <meta name="HandheldFriendly" content="True">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com/">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+        
+            <link rel="stylesheet" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;" href="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/css2">
+        
+
+        
+        
+    <link rel="stylesheet" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;" href="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/prism.min.css">
+<noscript>
+  <link
+    rel="stylesheet"
+    href="https://cdn.freecodecamp.org/news-assets/prism/1.29.0/themes/prism.min.css"
+  />
+</noscript>
+<link rel="stylesheet" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;" href="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/prism-unescaped-markup.min.css">
+<noscript>
+  <link
+    rel="stylesheet"
+    href="https://cdn.freecodecamp.org/news-assets/prism/1.29.0/plugins/unescaped-markup/prism-unescaped-markup.min.css"
+  />
+</noscript>
+
+<script async="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/gtm.js"></script><script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/prism-core.min.js"></script>
+<script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/prism-autoloader.min.js"></script>
+
+
+
+        
+        <link rel="stylesheet" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;" href="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/global-26e2f3cde9.css">
+        <link rel="stylesheet" type="text/css" href="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/screen-5a4f9d5c91.css">
+        <link rel="stylesheet" type="text/css" href="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/search-bar-124f5f949c.css">
+
+        
+        <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/algoliasearch.min.js"></script>
+        <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/autocomplete.min.js"></script>
+
+        
+        <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/dayjs.min.js"></script>
+        <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/localizedFormat.min.js"></script>
+        <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/relativeTime.min.js"></script>
+
+        
+        
+            <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/en.min.js"></script>
+        
+
+        
+        <script>let client,index;document.addEventListener("DOMContentLoaded",(()=>{client=algoliasearch("QMJYL5WYTI","89770b24481654192d7a5c402c6ad9a0"),index=client.initIndex("news")})),document.addEventListener("DOMContentLoaded",(()=>{const e=window.screen.width,t=window.screen.height,n=e>=767&&t>=768?8:5,o=document.getElementById("search-form"),s=document.getElementById("search-input"),a=document.getElementById("dropdown-container");let i,d,c;s.addEventListener("input",(e=>{i=e.target.value})),o.addEventListener("submit",(e=>{e.preventDefault(),function(){if(d=document.getElementsByClassName("aa-cursor")[0],d&&i){const e=d.querySelector("a").href;window.location.assign(e)}else!d&&i&&c&&window.location.assign(`https://www.freecodecamp.org/news/search?query=${i}`)}()}));const l=autocomplete("#search-input",{hint:!1,keyboardShortcuts:["s",191],openOnFocus:!0,appendTo:a,debug:!0},[{source:autocomplete.sources.hits(index,{hitsPerPage:n}),debounce:250,templates:{suggestion:e=>(c=!0,`\n            <a href="${e.url}">\n              <div class="algolia-result">\n                <span>${e._highlightResult.title.value}</span>\n              </div>\n            </a>\n          `),empty:()=>(c=!1,'\n            <div class="aa-suggestion footer-suggestion no-hits-footer">\n              <div class="algolia-result">\n                <span>\n                  No tutorials found\n                </span>\n              </div>\n            </div>\n          '),footer:e=>{if(!e.isEmpty)return`\n              <div class="aa-suggestion footer-suggestion">\n                <a id="algolia-footer-selector" href="https://www.freecodecamp.org/news/search?query=${i}">\n                  <div class="algolia-result algolia-footer">\n                    See all results for ${i}\n                  </div>\n                </a>\n              </div>\n            `}}}]).on("autocomplete:selected",((e,t,n,o)=>{d=t?t.url:`https://www.freecodecamp.org/news/search?query=${i}`,"click"!==o.selectionMethod&&"tabKey"!==o.selectionMethod&&c&&window.location.assign(d)}));document.addEventListener("click",(e=>{e.target!==s&&l.autocomplete.close()}))})),document.addEventListener("DOMContentLoaded",(()=>{dayjs.extend(dayjs_plugin_localizedFormat),dayjs.extend(dayjs_plugin_relativeTime),dayjs.locale("en")}));const isAuthenticated=document.cookie.split(";").some((e=>e.trim().startsWith("jwt_access_token="))),isDonor=document.cookie.split(";").some((e=>e.trim().startsWith("isDonor=true")));</script>
+
+        
+        
+    
+        <script data-ad-client="ca-pub-9482786369113753" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/f.txt" crossorigin="anonymous" async=""></script>
+        <script data-test-label="toggle-ad-layout" defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/toggle-ad-layout-099254b065.js"></script>
+    
+
+
+        
+        
+    <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/fitvids-5d12072cbf.js"></script>
+    
+    <script>document.addEventListener("DOMContentLoaded",(()=>{const t=document.querySelector(".post-full-content");t&&fitVids(t)}));</script>
+
+
+        
+        
+
+        <link rel="icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon.ico" type="image/png">
+        
+        
+            <link rel="canonical" href="https://www.freecodecamp.org/news/python-web-scraping-tutorial/">
+        
+        <meta name="referrer" content="no-referrer-when-downgrade">
+
+        
+
+        
+    <meta name="description" content="If you are a data enthusiast, you&#39;ll likely agree that one of the richest sources of real-world data is social media. Sites like Twitter are full of data. You can use the data you can get from social media in a number of ways, like sentiment analysis (analyzing people&#39;s thoughts)">
+
+    
+    <meta property="og:site_name" content="freeCodeCamp.org">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape">
+    
+        <meta property="og:description" content="If you are a data enthusiast, you&#39;ll likely agree that one of the richest sources of real-world data is social media. Sites like Twitter are full of data. You can use the data you can get from social media in a number of ways, like sentiment analysis (analyzing people&#39;s thoughts)">
+    
+    <meta property="og:url" content="https://www.freecodecamp.org/news/python-web-scraping-tutorial/">
+    <meta property="og:image" content="https://www.freecodecamp.org/news/content/images/2022/07/scraping-with-python-article-image.jpeg">
+    <meta property="article:published_time" content="2022-07-12T17:58:29.000Z">
+    <meta property="article:modified_time" content="2022-07-12T17:58:29.000Z">
+    
+        <meta property="article:tag" content="Python">
+    
+        <meta property="article:tag" content="Web Scraping">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/freecodecamp">
+    
+
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape">
+    
+        <meta name="twitter:description" content="If you are a data enthusiast, you&#39;ll likely agree that one of the richest sources of real-world data is social media. Sites like Twitter are full of data. You can use the data you can get from social media in a number of ways, like sentiment analysis (analyzing people&#39;s thoughts)">
+    
+    <meta name="twitter:url" content="https://www.freecodecamp.org/news/python-web-scraping-tutorial/">
+    <meta name="twitter:image" content="https://www.freecodecamp.org/news/content/images/2022/07/scraping-with-python-article-image.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Ibrahim Abayomi Ogunbiyi">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Python, Web Scraping">
+    <meta name="twitter:site" content="@freecodecamp">
+    
+        <meta name="twitter:creator" content="@Comejoinfolks">
+    
+
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1333">
+
+
+        
+    <script type="application/ld+json">{
+	"@context": "https://schema.org",
+	"@type": "Article",
+	"publisher": {
+		"@type": "Organization",
+		"name": "freeCodeCamp.org",
+		"url": "https://www.freecodecamp.org/news/",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://cdn.freecodecamp.org/platform/universal/fcc_primary.svg",
+			"width": 2100,
+			"height": 240
+		}
+	},
+	"image": {
+		"@type": "ImageObject",
+		"url": "https://www.freecodecamp.org/news/content/images/2022/07/scraping-with-python-article-image.jpeg",
+		"width": 2000,
+		"height": 1333
+	},
+	"url": "https://www.freecodecamp.org/news/python-web-scraping-tutorial/",
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": "https://www.freecodecamp.org/news/"
+	},
+	"datePublished": "2022-07-12T17:58:29.000Z",
+	"dateModified": "2022-07-12T17:58:29.000Z",
+	"keywords": "Python, Web Scraping",
+	"description": "If you are a data enthusiast, you&#x27;ll likely agree that one of the richest\nsources of real-world data is social media. Sites like Twitter are full of data.\n\nYou can use the data you can get from social media in a number of ways, like\nsentiment analysis (analyzing people&#x27;s thoughts) on a specific issue or field of\ninterest. \n\nThere are several ways you can scrape (or gather) data from Twitter. And in this\narticle, we will look at two of those ways: using Tweepy and Snscrape. \n\nWe will learn a meth",
+	"headline": "Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape",
+	"author": {
+		"@type": "Person",
+		"name": "Ibrahim Abayomi Ogunbiyi",
+		"url": "https://www.freecodecamp.org/news/author/ibrahim/",
+		"sameAs": [
+			"https://www.linkedin.com/in/ibrahimogunbiyi/",
+			"https://twitter.com/Comejoinfolks"
+		],
+		"image": {
+			"@type": "ImageObject",
+			"url": "https://www.freecodecamp.org/news/content/images/2022/05/Screenshot_20220516-112131_Gallery.jpg",
+			"width": 1080,
+			"height": 2220
+		}
+	}
+}</script>
+
+
+        <meta name="generator" content="Eleventy">
+        <link rel="alternate" type="application/rss+xml" title="freeCodeCamp.org" href="https://www.freecodecamp.org/news/rss/">
+
+        <link rel="preconnect" href="https://fonts.gstatic.com/">
+
+<!-- Web Monetization (https://webmonetization.org/) -->
+<meta name="monetization" content="$ilp.uphold.com/LJmbPn7WD4JB">
+<!-- end Web Monetization -->
+
+<!-- dataLayer setup -->
+<script>
+window.dataLayer = window.dataLayer || [];
+</script>
+<!-- End dataLayer setup -->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5D6RKKP');</script>
+<!-- End Google Tag Manager -->
+
+
+<meta name="google-site-verification" content="b4tITLzEeeZGEpvD4mGNf3khKM4fvqejQaz9SYBQP8E">
+
+        
+    <style id="fit-vids-style">.fluid-width-video-container{flex-grow: 1;width:100%;}.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style></head>
+    
+    
+        <body class="home-template">
+    
+        <div class="site-wrapper">
+            <nav class="site-nav nav-padding">
+    <div class="site-nav-left">
+        
+<form id="search-form" data-test-label="search-bar">
+    <div role="search" class="searchbox__wrapper">
+        <label class="fcc_sr_only" for="search-input">
+            Search
+        </label>
+        <input type="search" placeholder="
+    Search 10,100+ tutorials
+" id="search-input" class="aa-input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" dir="auto" style=""><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: Lato, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: normal; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre>
+        <button type="submit" class="ais-SearchBox-submit">
+            <svg class="ais-SearchBox-submitIcon" xmlns="https://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 40 40">
+    <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z"></path>
+</svg>
+
+            <span class="fcc_sr_only">Submit your search query</span>
+        </button>
+        <div id="dropdown-container"><span class="algolia-autocomplete" style="position: absolute; z-index: 100; display: none; direction: ltr;"><span class="aa-dropdown-menu" role="listbox" id="algolia-autocomplete-listbox-0" style="display: block; left: 0px; right: auto;"><div class="aa-dataset-1"></div></span></span></div>
+    </div>
+</form>
+
+    </div>
+    <div class="site-nav-middle">
+        <a class="site-nav-logo" href="https://www.freecodecamp.org/news" data-test-label="site-nav-logo"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/fcc_primary.svg" alt="freeCodeCamp.org"></a>
+    </div>
+    <div class="site-nav-right">
+        <div class="nav-group">
+            <a class="nav-forum" id="nav-forum" rel="noopener noreferrer" href="https://forum.freecodecamp.org/" target="_blank" data-test-label="forum-button">Forum</a>
+            <a class="toggle-button-nav" id="nav-donate" rel="noopener noreferrer" href="https://www.freecodecamp.org/donate/" target="_blank" data-test-label="donate-button">Donate</a>
+        </div>
+    </div>
+</nav>
+
+
+            
+            <a class="banner" id="banner" data-test-label="banner" rel="noopener noreferrer" target="_blank" href="https://www.freecodecamp.org/" text-variation="default">
+    <p id="banner-text">Learn to code — <span>free 3,000-hour curriculum</span></p>
+</a>
+
+
+    
+    <script>document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("banner"),t=document.getElementById("banner-text");isAuthenticated?(t.innerHTML="Support our charity and our mission. <span>Donate to freeCodeCamp.org</span>.",e.href="https://www.freecodecamp.org/donate",e.setAttribute("text-variation","authenticated")):isDonor?(t.innerHTML="Thank you for supporting freeCodeCamp through <span>your donations</span>.",e.href="https://www.freecodecamp.org/news/how-to-donate-to-free-code-camp/",e.setAttribute("text-variation","donor")):(t.innerHTML="Learn to code — <span>free 3,000-hour curriculum</span>",e.href="https://www.freecodecamp.org/",e.setAttribute("text-variation","default"))}));</script>
+
+
+            <div id="error-message"></div>
+
+            
+    <main id="site-main" class="post-template site-main outer">
+        <div class="inner ad-layout">
+            <article class="post-full post ">
+                <header class="post-full-header">
+                    <section class="post-full-meta">
+                        <time class="post-full-meta-date" datetime="Tue Jul 12 2022 17:58:29 GMT+0000 (Coordinated Universal Time)">
+                            July 12, 2022
+                        </time>
+                        
+                            <span class="date-divider">/</span>
+                            <a dir="ltr" href="https://www.freecodecamp.org/news/tag/python/">
+                                #Python
+                            </a>
+                        
+                    </section>
+                    <h1 class="post-full-title">Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape</h1>
+                </header>
+                <div class="post-full-author-header" data-test-label="author-header-no-bio">
+                    
+                        
+                            
+    
+    
+    
+
+    <section class="author-card" data-test-label="author-card">
+        
+            
+    <img srcset="https://www.freecodecamp.org/news/content/images/size/w60/2022/05/Screenshot_20220516-112131_Gallery.jpg 60w" sizes="60px" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/Screenshot_20220516-112131_Gallery.jpg" class="author-profile-image" alt="Ibrahim Abayomi Ogunbiyi" width="1080" height="2220" onerror="this.style.display=&#39;none&#39;" data-test-label="profile-image">
+  
+        
+
+        <section class="author-card-content author-card-content-no-bio">
+            <span class="author-card-name">
+                <a href="https://www.freecodecamp.org/news/author/ibrahim/" data-test-label="profile-link">
+                    
+                        Ibrahim Abayomi Ogunbiyi
+                    
+                </a>
+            </span>
+            
+        </section>
+    </section>
+
+                        
+                    
+                </div>
+                
+                    <figure class="post-full-image">
+                        
+    <picture>
+      <source media="(max-width: 700px)" sizes="1px" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1w">
+      <source media="(min-width: 701px)" sizes="(max-width: 800px) 400px, (max-width: 1170px) 700px, 1400px" srcset="https://www.freecodecamp.org/news/content/images/size/w300/2022/07/scraping-with-python-article-image.jpeg 300w,https://www.freecodecamp.org/news/content/images/size/w600/2022/07/scraping-with-python-article-image.jpeg 600w,https://www.freecodecamp.org/news/content/images/size/w1000/2022/07/scraping-with-python-article-image.jpeg 1000w,https://www.freecodecamp.org/news/content/images/size/w2000/2022/07/scraping-with-python-article-image.jpeg 2000w">
+      <img onerror="this.style.display=&#39;none&#39;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/scraping-with-python-article-image.jpeg" alt="Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape" ,="" width="2000" height="1333">
+    </picture>
+  
+                    </figure>
+                
+                <section class="post-full-content">
+                    <div class="post-and-sidebar">
+                        <section class="post-content ">
+                            
+<p>If you are a data enthusiast, you'll likely agree that one of the richest sources of real-world data is social media. Sites like Twitter are full of data.</p><p>You can use the data you can get from social media in a number of ways, like sentiment analysis (analyzing people's thoughts) on a specific issue or field of interest. </p><p>There are several ways you can scrape (or gather) data from Twitter. And in this article, we will look at two of those ways: using Tweepy and Snscrape. </p><p>We will learn a method to scrape public conversations from people on a specific trending topic, as well as tweets from a particular user. </p><p>Now without further ado, let’s get started.</p><h2 id="tweepy-vs-snscrape-introduction-to-our-scraping-tools">Tweepy vs Snscrape – Introduction to Our Scraping Tools</h2><p>Now, before we get into the implementation of each platform, let's try to grasp the differences and limits of each platform.</p><h3 id="tweepy">Tweepy</h3><p>Tweepy is a Python library for integrating with the Twitter API. Because Tweepy is connected with the Twitter API, you can perform complex queries in addition to scraping tweets. It enables you to take advantage of all of the Twitter API's capabilities. </p><p>But there are some drawbacks – like the fact that its standard API only allows you to collect tweets for up to a week (that is, Tweepy does not allow recovery of tweets beyond a week window, so historical data retrieval is not permitted). </p><p>Also, there are limits to how many tweets you can retrieve from a user's account. You can <a href="https://www.tweepy.org/">read more about Tweepy's functionalities here</a>.</p><h3 id="snscrape">Snscrape</h3><p>Snscrape is another approach for scraping information from Twitter that does not require the use of an API. Snscrape allows you to scrape basic information such as a user's profile, tweet content, source, and so on. </p><p>Snscrape is not limited to Twitter, but can also scrape content from other prominent social media networks like Facebook, Instagram, and others. </p><p>Its advantages are that there are no limits to the number of tweets you can retrieve or the window of tweets (that is, the date range of tweets). So Snscrape allows you to retrieve old data. </p><p>But the one disadvantage is that it lacks all the other functionalities of Tweepy – still, if you only want to scrape tweets, Snscrape would be enough.</p><p>Now that we've clarified the distinction between the two methods, let's go over their implementation one by one.</p><h2 id="how-to-use-tweepy-to-scrape-tweets">How to Use Tweepy to Scrape Tweets</h2><p>Before we begin using Tweepy, we must first make sure that our Twitter credentials are ready. With that, we can connect Tweepy to our API key and begin scraping. </p><p>If you do not have Twitter credentials, you can register for a Twitter developer account by going <a href="https://developer.twitter.com/">here</a>. You will be asked some basic questions about how you intend to use the Twitter API. After that, you can begin the implementation.</p><p>The first step is to install the Tweepy library on your local machine, which you can do by typing:</p><!--kg-card-begin: markdown--><pre class="language-cmd" tabindex="0"><code class="language-cmd">pip install git+https://github.com/tweepy/tweepy.git
+</code></pre>
+<!--kg-card-end: markdown--><h3 id="how-to-scrape-tweets-from-a-user-on-twitter">How to Scrape Tweets from a User on Twitter</h3><p>Now that we’ve installed the Tweepy library, let’s scrape 100 tweets from a user called <code>john</code> on Twitter. We'll look at the full code implementation that will let us do this and discuss it in detail so we can grasp what’s going on:</p><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python"><span class="token keyword">import</span> tweepy
+
+consumer_key <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your API/Consumer key </span>
+consumer_secret <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your API/Consumer Secret Key</span>
+access_token <span class="token operator">=</span> <span class="token string">"XXXX"</span>    <span class="token comment">#Your Access token key</span>
+access_token_secret <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your Access token Secret key</span>
+
+<span class="token comment">#Pass in our twitter API authentication key</span>
+auth <span class="token operator">=</span> tweepy<span class="token punctuation">.</span>OAuth1UserHandler<span class="token punctuation">(</span>
+    consumer_key<span class="token punctuation">,</span> consumer_secret<span class="token punctuation">,</span>
+    access_token<span class="token punctuation">,</span> access_token_secret
+<span class="token punctuation">)</span>
+
+<span class="token comment">#Instantiate the tweepy API</span>
+api <span class="token operator">=</span> tweepy<span class="token punctuation">.</span>API<span class="token punctuation">(</span>auth<span class="token punctuation">,</span> wait_on_rate_limit<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+
+username <span class="token operator">=</span> <span class="token string">"john"</span>
+no_of_tweets <span class="token operator">=</span><span class="token number">100</span>
+
+
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token comment">#The number of tweets we want to retrieved from the user</span>
+    tweets <span class="token operator">=</span> api<span class="token punctuation">.</span>user_timeline<span class="token punctuation">(</span>screen_name<span class="token operator">=</span>username<span class="token punctuation">,</span> count<span class="token operator">=</span>no_of_tweets<span class="token punctuation">)</span>
+    
+    <span class="token comment">#Pulling Some attributes from the tweet</span>
+    attributes_container <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>tweet<span class="token punctuation">.</span>created_at<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>favorite_count<span class="token punctuation">,</span>tweet<span class="token punctuation">.</span>source<span class="token punctuation">,</span>  tweet<span class="token punctuation">.</span>text<span class="token punctuation">]</span> <span class="token keyword">for</span> tweet <span class="token keyword">in</span> tweets<span class="token punctuation">]</span>
+
+    <span class="token comment">#Creation of column list to rename the columns in the dataframe</span>
+    columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Date Created"</span><span class="token punctuation">,</span> <span class="token string">"Number of Likes"</span><span class="token punctuation">,</span> <span class="token string">"Source of Tweet"</span><span class="token punctuation">,</span> <span class="token string">"Tweet"</span><span class="token punctuation">]</span>
+    
+    <span class="token comment">#Creation of Dataframe</span>
+    tweets_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>attributes_container<span class="token punctuation">,</span> columns<span class="token operator">=</span>columns<span class="token punctuation">)</span>
+<span class="token keyword">except</span> BaseException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Status Failed On,'</span><span class="token punctuation">,</span><span class="token builtin">str</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>Now let's go over each part of the code in the above block.</p><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python"><span class="token keyword">import</span> tweepy
+
+consumer_key <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your API/Consumer key </span>
+consumer_secret <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your API/Consumer Secret Key</span>
+access_token <span class="token operator">=</span> <span class="token string">"XXXX"</span>    <span class="token comment">#Your Access token key</span>
+access_token_secret <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your Access token Secret key</span>
+
+<span class="token comment">#Pass in our twitter API authentication key</span>
+auth <span class="token operator">=</span> tweepy<span class="token punctuation">.</span>OAuth1UserHandler<span class="token punctuation">(</span>
+    consumer_key<span class="token punctuation">,</span> consumer_secret<span class="token punctuation">,</span>
+    access_token<span class="token punctuation">,</span> access_token_secret
+<span class="token punctuation">)</span>
+
+<span class="token comment">#Instantiate the tweepy API</span>
+api <span class="token operator">=</span> tweepy<span class="token punctuation">.</span>API<span class="token punctuation">(</span>auth<span class="token punctuation">,</span> wait_on_rate_limit<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>In the above code, we've imported the Tweepy library into our code, then we've created some variables where we store our Twitter credentials (The Tweepy authentication handler requires four of our Twitter credentials). So we then pass in those variable into the Tweepy authentication handler and save them into another variable. </p><p>Then the last statement of call is where we instantiated the Tweepy API and passed in the require parameters.</p><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python">username <span class="token operator">=</span> <span class="token string">"john"</span>
+no_of_tweets <span class="token operator">=</span><span class="token number">100</span>
+
+
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token comment">#The number of tweets we want to retrieved from the user</span>
+    tweets <span class="token operator">=</span> api<span class="token punctuation">.</span>user_timeline<span class="token punctuation">(</span>screen_name<span class="token operator">=</span>username<span class="token punctuation">,</span> count<span class="token operator">=</span>no_of_tweets<span class="token punctuation">)</span>
+    
+    <span class="token comment">#Pulling Some attributes from the tweet</span>
+    attributes_container <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>tweet<span class="token punctuation">.</span>created_at<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>favorite_count<span class="token punctuation">,</span>tweet<span class="token punctuation">.</span>source<span class="token punctuation">,</span>  tweet<span class="token punctuation">.</span>text<span class="token punctuation">]</span> <span class="token keyword">for</span> tweet <span class="token keyword">in</span> tweets<span class="token punctuation">]</span>
+
+    <span class="token comment">#Creation of column list to rename the columns in the dataframe</span>
+    columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Date Created"</span><span class="token punctuation">,</span> <span class="token string">"Number of Likes"</span><span class="token punctuation">,</span> <span class="token string">"Source of Tweet"</span><span class="token punctuation">,</span> <span class="token string">"Tweet"</span><span class="token punctuation">]</span>
+    
+    <span class="token comment">#Creation of Dataframe</span>
+    tweets_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>attributes_container<span class="token punctuation">,</span> columns<span class="token operator">=</span>columns<span class="token punctuation">)</span>
+<span class="token keyword">except</span> BaseException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Status Failed On,'</span><span class="token punctuation">,</span><span class="token builtin">str</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>In the above code, we created the name of the user (the @name in Twitter) we want to retrieved the tweets from and also the number of tweets. We then created an exception handler to help us catch errors in a more effective way. </p><p>After that, the <code>api.user_timeline()</code> returns a collection of the most recent tweets posted by the user we picked in the <code>screen_name</code> parameter and the number of tweets you want to retrieve. </p><p>In the next line of code, we passed in some attributes we want to retrieve from each tweet and saved them into a list. To see more attributes you can retrieve from a tweet, read <a href="https://developer.twitter.com/en/docs/twitter-api/v1/tweets/timelines/api-reference/get-statuses-user_timeline">this</a>. </p><p>In the last chunk of code we created a dataframe and passed in the list we created along with the names of the column we created.</p><p>Note that the column names must be in the sequence of how you passed them into the attributes container (that is, how you passed those attributes in a list when you were retrieving the attributes from the tweet).</p><p>If you correctly followed the steps I described, you should have something like this:</p><figure class="kg-card kg-image-card kg-width-wide kg-card-hascaption"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/image-17.png" class="kg-image" alt="image-17" srcset="https://www.freecodecamp.org/news/content/images/size/w600/2022/07/image-17.png 600w, https://www.freecodecamp.org/news/content/images/size/w1000/2022/07/image-17.png 1000w, https://www.freecodecamp.org/news/content/images/2022/07/image-17.png 1342w" sizes="(min-width: 1200px) 1200px" width="1342" height="804" loading="lazy"><figcaption>Image by Author</figcaption></figure><p>Now that we are done, let's go over one more example before we move into the Snscrape implementation. </p><h3 id="how-to-scrape-tweets-from-a-text-search">How to Scrape Tweets from a Text Search</h3><p>In this method, we will be retrieving a tweet based on a search. You can do that like this:</p><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python"><span class="token keyword">import</span> tweepy
+
+consumer_key <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your API/Consumer key </span>
+consumer_secret <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your API/Consumer Secret Key</span>
+access_token <span class="token operator">=</span> <span class="token string">"XXXX"</span>    <span class="token comment">#Your Access token key</span>
+access_token_secret <span class="token operator">=</span> <span class="token string">"XXXX"</span> <span class="token comment">#Your Access token Secret key</span>
+
+<span class="token comment">#Pass in our twitter API authentication key</span>
+auth <span class="token operator">=</span> tweepy<span class="token punctuation">.</span>OAuth1UserHandler<span class="token punctuation">(</span>
+    consumer_key<span class="token punctuation">,</span> consumer_secret<span class="token punctuation">,</span>
+    access_token<span class="token punctuation">,</span> access_token_secret
+<span class="token punctuation">)</span>
+
+<span class="token comment">#Instantiate the tweepy API</span>
+api <span class="token operator">=</span> tweepy<span class="token punctuation">.</span>API<span class="token punctuation">(</span>auth<span class="token punctuation">,</span> wait_on_rate_limit<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+
+search_query <span class="token operator">=</span> <span class="token string">"sex for grades"</span>
+no_of_tweets <span class="token operator">=</span><span class="token number">150</span>
+
+
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token comment">#The number of tweets we want to retrieved from the search</span>
+    tweets <span class="token operator">=</span> api<span class="token punctuation">.</span>search_tweets<span class="token punctuation">(</span>q<span class="token operator">=</span>search_query<span class="token punctuation">,</span> count<span class="token operator">=</span>no_of_tweets<span class="token punctuation">)</span>
+    
+    <span class="token comment">#Pulling Some attributes from the tweet</span>
+    attributes_container <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>tweet<span class="token punctuation">.</span>user<span class="token punctuation">.</span>name<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>created_at<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>favorite_count<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>source<span class="token punctuation">,</span>  tweet<span class="token punctuation">.</span>text<span class="token punctuation">]</span> <span class="token keyword">for</span> tweet <span class="token keyword">in</span> tweets<span class="token punctuation">]</span>
+
+    <span class="token comment">#Creation of column list to rename the columns in the dataframe</span>
+    columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"User"</span><span class="token punctuation">,</span> <span class="token string">"Date Created"</span><span class="token punctuation">,</span> <span class="token string">"Number of Likes"</span><span class="token punctuation">,</span> <span class="token string">"Source of Tweet"</span><span class="token punctuation">,</span> <span class="token string">"Tweet"</span><span class="token punctuation">]</span>
+    
+    <span class="token comment">#Creation of Dataframe</span>
+    tweets_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>attributes_container<span class="token punctuation">,</span> columns<span class="token operator">=</span>columns<span class="token punctuation">)</span>
+<span class="token keyword">except</span> BaseException <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Status Failed On,'</span><span class="token punctuation">,</span><span class="token builtin">str</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>The above code is similar to the previous code, except that we changed the API method from <code>api.user_timeline()</code> to <code>api.search_tweets()</code>. We've also added <code>tweet.user.name</code> to the attributes container list. </p><p>In the code above, you can see that we passed in two attributes. This is because if we only pass in <code>tweet.user</code>, it would only return a dictionary user object. So we must also pass in another attribute we want to retrieve from the user object, which is <code>name</code>. </p><p>You can go <a href="https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/user">here</a> to see a list of additional attributes that you can retrieve from a user object. Now you should see something like this once you run it:</p><figure class="kg-card kg-image-card kg-width-wide kg-card-hascaption"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/image-18.png" class="kg-image" alt="image-18" srcset="https://www.freecodecamp.org/news/content/images/size/w600/2022/07/image-18.png 600w, https://www.freecodecamp.org/news/content/images/size/w1000/2022/07/image-18.png 1000w, https://www.freecodecamp.org/news/content/images/2022/07/image-18.png 1340w" sizes="(min-width: 1200px) 1200px" width="1340" height="813" loading="lazy"><figcaption>Image by Author.</figcaption></figure><p>Alright, that just about wraps up the Tweepy implementation. Just remember that there is a limit to the number of tweets you can retrieve, and you can not retrieve tweets more than 7 days old using Tweepy.</p><h2 id="how-to-use-snscrape-to-scrape-tweets">How to Use Snscrape to Scrape Tweets</h2><p>As I mentioned previously, Snscrape does not require Twitter credentials (API key) to access it. There is also no limit to the number of tweets you can fetch. </p><p>For this example, though, we'll just retrieve the same tweets as in the previous example, but using Snscrape instead. </p><p>To use Snscrape, we must first install its library on our PC. You can do that by typing:</p><!--kg-card-begin: markdown--><pre class="language-cmd" tabindex="0"><code class="language-cmd">pip3 install git+https://github.com/JustAnotherArchivist/snscrape.git
+</code></pre>
+<!--kg-card-end: markdown--><h3 id="how-to-scrape-tweets-from-a-user-with-snscrape">How to Scrape Tweets from a User with Snscrape</h3><p>Snscrape includes two methods for getting tweets from Twitter: the command line interface (CLI) and a Python Wrapper. Just keep in mind that the Python Wrapper is currently undocumented – but we can still get by with trial and error. </p><p>In this example, we will use the Python Wrapper because it is more intuitive than the CLI method. But if you get stuck with some code, you can always turn to the GitHub community for assistance. The contributors will be happy to help you.</p><p>To retrieve tweets from a particular user, we can do the following:</p><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python"><span class="token keyword">import</span> snscrape<span class="token punctuation">.</span>modules<span class="token punctuation">.</span>twitter <span class="token keyword">as</span> sntwitter
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+<span class="token comment"># Created a list to append all tweet attributes(data)</span>
+attributes_container <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment"># Using TwitterSearchScraper to scrape data and append tweets to list</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span>tweet <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>sntwitter<span class="token punctuation">.</span>TwitterSearchScraper<span class="token punctuation">(</span><span class="token string">'from:john'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>get_items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i<span class="token operator">&gt;</span><span class="token number">100</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+    attributes_container<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">[</span>tweet<span class="token punctuation">.</span>date<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>likeCount<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>sourceLabel<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>content<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    
+<span class="token comment"># Creating a dataframe from the tweets list above </span>
+tweets_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>attributes_container<span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"Date Created"</span><span class="token punctuation">,</span> <span class="token string">"Number of Likes"</span><span class="token punctuation">,</span> <span class="token string">"Source of Tweet"</span><span class="token punctuation">,</span> <span class="token string">"Tweets"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>Let's go over some of the code that you might not understand at first glance:</p><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python"><span class="token keyword">for</span> i<span class="token punctuation">,</span>tweet <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>sntwitter<span class="token punctuation">.</span>TwitterSearchScraper<span class="token punctuation">(</span><span class="token string">'from:john'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>get_items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i<span class="token operator">&gt;</span><span class="token number">100</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+    attributes_container<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">[</span>tweet<span class="token punctuation">.</span>date<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>likeCount<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>sourceLabel<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>content<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    
+  
+<span class="token comment"># Creating a dataframe from the tweets list above </span>
+tweets_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>attributes_container<span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"Date Created"</span><span class="token punctuation">,</span> <span class="token string">"Number of Likes"</span><span class="token punctuation">,</span> <span class="token string">"Source of Tweet"</span><span class="token punctuation">,</span> <span class="token string">"Tweets"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>In the above code, what the <code>sntwitter.TwitterSearchScaper</code> does is return an object of tweets from the name of the user we passed into it (which is john). </p><p>As I mentioned earlier, Snscrape does not have limits on numbers of tweets so it will return however many tweets from that user. To help with this, we need to add the enumerate function which will iterate through the object and add a counter so we can access the most recent 100 tweets from the user. </p><p>You can see that the attributes syntax we get from each tweet looks like the one from Tweepy. These are the list of attributes that we can get from the Snscrape tweet which was curated by Martin Beck.</p><figure class="kg-card kg-image-card kg-width-wide kg-card-hascaption"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/Sns.Scrape.png" class="kg-image" alt="Sns.Scrape" srcset="https://www.freecodecamp.org/news/content/images/size/w600/2022/07/Sns.Scrape.png 600w, https://www.freecodecamp.org/news/content/images/2022/07/Sns.Scrape.png 875w" width="875" height="447" loading="lazy"><figcaption>Credit: Martin Beck</figcaption></figure><p>More attributes might be added, as the Snscrape library is still in development. Like for instance in the above image, <code>source</code> has been replaced with <code>sourceLabel</code>. If you pass in only <code>source</code> it will return an object.</p><p>If you run the above code, you should see something like this as well:</p><figure class="kg-card kg-image-card kg-width-wide kg-card-hascaption"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/image-19.png" class="kg-image" alt="image-19" srcset="https://www.freecodecamp.org/news/content/images/size/w600/2022/07/image-19.png 600w, https://www.freecodecamp.org/news/content/images/size/w1000/2022/07/image-19.png 1000w, https://www.freecodecamp.org/news/content/images/2022/07/image-19.png 1339w" sizes="(min-width: 1200px) 1200px" width="1339" height="788" loading="lazy"><figcaption>Image by Author</figcaption></figure><p>Now let's do the same for scraping by search.</p><h3 id="how-to-scrape-tweets-from-a-text-search-with-snscrape">How to Scrape Tweets from a Text Search with Snscrape</h3><!--kg-card-begin: markdown--><pre class="language-python" tabindex="0"><code class="language-python"><span class="token keyword">import</span> snscrape<span class="token punctuation">.</span>modules<span class="token punctuation">.</span>twitter <span class="token keyword">as</span> sntwitter
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+<span class="token comment"># Creating list to append tweet data to</span>
+attributes_container <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment"># Using TwitterSearchScraper to scrape data and append tweets to list</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span>tweet <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>sntwitter<span class="token punctuation">.</span>TwitterSearchScraper<span class="token punctuation">(</span><span class="token string">'sex for grades since:2021-07-05 until:2022-07-06'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>get_items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i<span class="token operator">&gt;</span><span class="token number">150</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+    attributes_container<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">[</span>tweet<span class="token punctuation">.</span>user<span class="token punctuation">.</span>username<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>date<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>likeCount<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>sourceLabel<span class="token punctuation">,</span> tweet<span class="token punctuation">.</span>content<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    
+<span class="token comment"># Creating a dataframe to load the list</span>
+tweets_df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>attributes_container<span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"User"</span><span class="token punctuation">,</span> <span class="token string">"Date Created"</span><span class="token punctuation">,</span> <span class="token string">"Number of Likes"</span><span class="token punctuation">,</span> <span class="token string">"Source of Tweet"</span><span class="token punctuation">,</span> <span class="token string">"Tweet"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<!--kg-card-end: markdown--><p>Again, you can access a lot of historical data using Snscrape (unlike Tweepy, as its standard API cannot exceed 7 days. The premium API is 30 days.). So we can pass in the date from which we want to start the search and the date we want it to end in the <code>sntwitter.TwitterSearchScraper()</code> method.</p><p>What we've done in the preceding code is basically what we discussed before. The only thing to bear in mind is that until works similarly to the range function in Python (that is, it excludes the last integer). So if you want to get tweets from today, you need to include the day after today in the "until" parameter.</p><figure class="kg-card kg-image-card kg-width-wide kg-card-hascaption"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/image-21.png" class="kg-image" alt="image-21" srcset="https://www.freecodecamp.org/news/content/images/size/w600/2022/07/image-21.png 600w, https://www.freecodecamp.org/news/content/images/size/w1000/2022/07/image-21.png 1000w, https://www.freecodecamp.org/news/content/images/2022/07/image-21.png 1338w" sizes="(min-width: 1200px) 1200px" width="1338" height="788" loading="lazy"><figcaption>Image of Author.</figcaption></figure><p>Now you know how to scrape tweets with Snscrape, too!</p><h3 id="when-to-use-each-approach">When to use each approach</h3><p>Now that we've seen how each method works, you might be wondering when to use which. </p><p>Well, there is no universal rule for when to utilize each method. Everything comes down to a matter preference and your use case. </p><p>If you want to acquire an endless number of tweets, you should use Snscrape. But if you want to use extra features that Snscrape cannot provide (like geolocation, for example), then you should definitely use Tweepy. It is directly integrated with the Twitter API and provides complete functionality. </p><p>Even so, Snscrape is the most commonly used method for basic scraping.</p><h1 id="conclusion">Conclusion</h1><p>In this article, we learned how to scrape data from Python using Tweepy and Snscrape. But this was only a brief overview of how each approach works. You can learn more by exploring the web for additional information. </p><p>I've included some useful resources that you can use if you need additional information. Thank you for reading.</p><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://github.com/JustAnotherArchivist/snscrape"><div class="kg-bookmark-content"><div class="kg-bookmark-title">GitHub - JustAnotherArchivist/snscrape: A social networking service scraper in Python</div><div class="kg-bookmark-description">A social networking service scraper in Python. Contribute to JustAnotherArchivist/snscrape development by creating an account on GitHub.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/favicon.svg" width="32" height="32" alt="favicon" loading="lazy"><span class="kg-bookmark-author">JustAnotherArchivist</span><span class="kg-bookmark-publisher">GitHub</span></div></div><div class="kg-bookmark-thumbnail"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/snscrape" width="1200" height="600" alt="snscrape" loading="lazy"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://docs.tweepy.org/en/stable/index.html"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Tweepy Documentation — tweepy 4.10.0 documentation</div><div class="kg-bookmark-description"></div><div class="kg-bookmark-metadata"></div></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://betterprogramming.pub/how-to-scrape-tweets-with-snscrape-90124ed006af"><div class="kg-bookmark-content"><div class="kg-bookmark-title">How to Scrape Tweets With snscrape</div><div class="kg-bookmark-description">Twitter has introduced changes to their API that have rendered various tweet scraping libraries obsolete. In this tutorial, I cover snscrape as a viable substitute.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/1_sHhtYhaCe2Uc3IU0IgKwIQ.png" width="152" height="152" alt="1*sHhtYhaCe2Uc3IU0IgKwIQ" loading="lazy"><span class="kg-bookmark-author">Martin Beck</span><span class="kg-bookmark-publisher">Better Programming</span></div></div><div class="kg-bookmark-thumbnail"><img src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/1_zMclXvBcpFn5VAolfFMdiA.jpg" width="1200" height="800" alt="1*zMclXvBcpFn5VAolfFMdiA" loading="lazy"></div></a></figure>
+
+                        </section>
+                        
+                            <div class="sidebar">
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_0" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource.html"><iframe id="google_ads_frame0" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(1).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_1" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(2).html"><iframe id="google_ads_frame1" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(3).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_2" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(4).html"><iframe id="google_ads_frame2" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(5).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_3" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(6).html"><iframe id="google_ads_frame3" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(7).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_4" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(8).html"><iframe id="google_ads_frame4" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(9).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_5" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(10).html"><iframe id="google_ads_frame5" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(11).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_6" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(12).html"><iframe id="google_ads_frame6" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(13).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_7" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(14).html"><iframe id="google_ads_frame7" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(15).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_8" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(16).html"><iframe id="google_ads_frame8" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(17).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_9" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(18).html"><iframe id="google_ads_frame9" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(19).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_10" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(20).html"><iframe id="google_ads_frame10" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(21).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                                    <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_11" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(22).html"><iframe id="google_ads_frame11" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(23).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                                
+                            </div>
+                        
+                    </div>
+                    <hr>
+                    
+                        <div class="post-full-author-header" data-test-label="author-header-with-bio">
+                            
+                                
+    
+    
+    
+
+    <section class="author-card" data-test-label="author-card">
+        
+            
+    <img srcset="https://www.freecodecamp.org/news/content/images/size/w60/2022/05/Screenshot_20220516-112131_Gallery.jpg 60w" sizes="60px" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/Screenshot_20220516-112131_Gallery.jpg" class="author-profile-image" alt="Ibrahim Abayomi Ogunbiyi" width="1080" height="2220" onerror="this.style.display=&#39;none&#39;" loading="lazy" data-test-label="profile-image">
+  
+        
+
+        <section class="author-card-content ">
+            <span class="author-card-name">
+                <a href="https://www.freecodecamp.org/news/author/ibrahim/" data-test-label="profile-link">
+                    
+                        Ibrahim Abayomi Ogunbiyi
+                    
+                </a>
+            </span>
+            
+                
+                    <p data-test-label="author-bio">I'm an ardent data scientist who loves breaking and fixing up stuff related to data, and clearly taking care of the data to give me insights as to what it is portraying.</p>
+                
+            
+        </section>
+    </section>
+
+                            
+                        </div>
+                        <hr>
+                    
+
+                    
+                    
+                        
+    
+
+
+<p data-test-label="social-row-cta" class="social-row">
+    If you read this far, tweet to the author to show them you care. <button id="tweet-btn" class="cta-button" data-test-label="tweet-button" onclick="window.open(
+    &#39;https://twitter.com/intent/tweet?text=Thank%20you%20%40Comejoinfolks%20for%20writing%20this%20helpful%20article.%0A%0AWeb%20Scraping%20with%20Python%20%E2%80%93%20How%20to%20Scrape%20Data%20from%20Twitter%20using%20Tweepy%20and%20Snscrape%0A%0Ahttps://www.freecodecamp.org/news/python-web-scraping-tutorial/&#39;,
+    &#39;share-twitter&#39;,
+    &#39;width=550, height=235&#39;
+  ); return false;">Tweet a thanks</button>
+</p>
+
+
+    
+    <script>document.addEventListener("DOMContentLoaded",(()=>{const t=document.getElementById("tweet-btn"),e=window.location,n="Web%20Scraping%20with%20Python%20%E2%80%93%20How%20to%20Scrape%20Data%20from%20Twitter%20using%20Tweepy%20and%20Snscrape".replace(/&#39;/g,"%27"),o="",i="@Comejoinfolks",r=Boolean("");let a;if(r&&(o||i)){const t={originalPostAuthor:"",currentPostAuthor:"Ibrahim Abayomi Ogunbiyi"};a=encodeURIComponent(`Thank you ${o||t.originalPostAuthor} for writing this helpful article, and ${i||t.currentPostAuthor} for translating it.`)}else!r&&i&&(a=encodeURIComponent(`Thank you ${i} for writing this helpful article.`));const c=`window.open(\n    '${a?`https://twitter.com/intent/tweet?text=${a}%0A%0A${n}%0A%0A${e}`:`https://twitter.com/intent/tweet?text=${n}%0A%0A${e}`}',\n    'share-twitter',\n    'width=550, height=235'\n  ); return false;`;t.setAttribute("onclick",c)}));</script>
+
+
+                        
+
+<div class="learn-cta-row" data-test-label="learn-cta-row">
+    <p>
+        Learn to code for free. freeCodeCamp's open source curriculum has helped more than 40,000 people get jobs as developers. <a href="https://www.freecodecamp.org/learn/" class="cta-button" id="learn-to-code-cta" rel="noopener noreferrer" target="_blank">Get started</a>
+    </p>
+</div>
+
+                    
+                </section>
+                
+                    <div class="banner-ad bottom">
+                        <div class="ad-wrapper" data-test-label="ad-wrapper">
+    
+    <div class="ad-text" data-test-label="ad-text">ADVERTISEMENT</div>
+    <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-9482786369113753" data-ad-slot="5720086888" data-ad-format="auto" data-full-width-responsive="true"><iframe id="aswift_12" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(24).html"><iframe id="google_ads_frame12" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/saved_resource(25).html"></iframe></iframe></ins>
+    <script>
+        if (!isAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    </div>
+                
+            </article>
+        </div>
+    </main>
+
+
+            
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="footer-desc-col">
+                <p data-test-label="tax-exempt-status">freeCodeCamp is a donor-supported tax-exempt 501(c)(3) charity organization (United States Federal Tax Identification Number: 82-0779546)</p>
+                <p data-test-label="mission-statement">Our mission: to help people learn to code for free. We accomplish this by creating thousands of videos, articles, and interactive coding lessons - all freely available to the public. We also have thousands of freeCodeCamp study groups around the world.</p>
+                <p data-test-label="donation-initiatives">Donations to freeCodeCamp go toward our education initiatives, and help pay for servers, services, and staff.</p>
+                <p class="footer-donation" data-test-label="donate-text">
+                    You can <a href="https://www.freecodecamp.org/donate/" class="inline" rel="noopener noreferrer" target="_blank">make a tax-deductible donation here</a>.
+                </p>
+            </div>
+            <div class="trending-guides" data-test-label="trending-guides">
+                <div class="col-header">Trending Guides</div>
+                <div class="trending-guides-row">
+                    <div class="footer-col footer-col-1">
+                        <a href="https://www.freecodecamp.org/news/how-to-check-if-a-string-contains-a-substring-javascript/" rel="noopener noreferrer" target="_blank">JS Substring Tutorial
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/bubble-sort-algorithm-in-java-cpp-python-with-example-code/" rel="noopener noreferrer" target="_blank">Bubble Sort Algorithm
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-background-image-how-to-add-wallpaper-images-to-your-website/" rel="noopener noreferrer" target="_blank">HTML Background Image
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-data-science-what-a-data-scientist-actually-does/" rel="noopener noreferrer" target="_blank">What is Data Science?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/sql-subquery-how-to-sub-query-in-select-statement/" rel="noopener noreferrer" target="_blank">SQL Subquery in SELECT
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/rename-file-linux-bash-command/" rel="noopener noreferrer" target="_blank">Rename a File in Linux
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/git-remove-last-commit-how-to-undo-a-commit-in-git/" rel="noopener noreferrer" target="_blank">Git Remove Last Commit
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-a-java-hashmap/" rel="noopener noreferrer" target="_blank">What is a Java Hashmap?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/crud-operations-crud-definition-in-programming/" rel="noopener noreferrer" target="_blank">CRUD Operations Defined
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/git-push-local-branch-to-remote-how-to-publish-a-new-branch-in-git/" rel="noopener noreferrer" target="_blank">Git Push Local to Remote
+                        </a>
+                    </div>
+                    <div class="footer-col footer-col-2">
+                        <a href="https://www.freecodecamp.org/news/ux-vs-ui-whats-the-difference-definition-and-meaning/" rel="noopener noreferrer" target="_blank">UX vs UI
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/vlookup-in-excel-formula-and-example-function/" rel="noopener noreferrer" target="_blank">VLOOKUP in Excel
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/big-o-cheat-sheet-time-complexity-chart/" rel="noopener noreferrer" target="_blank">Big O Cheatsheet
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/renaming-a-git-branch-how-to-rename-the-current-branch-in-git/" rel="noopener noreferrer" target="_blank">Git Rename Branch
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/how-to-create-a-pivot-table-in-excel/" rel="noopener noreferrer" target="_blank">Excel Pivot Table
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-alt-text-image-alt-text-html-example/" rel="noopener noreferrer" target="_blank">What is Alt Text?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-drop-down-menu-how-to-add-a-drop-down-list-with-the-select-element/" rel="noopener noreferrer" target="_blank">HTML Dropdown Menu
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/python-reverse-list-reversing-an-array-in-python/" rel="noopener noreferrer" target="_blank">Python Reverse List
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/how-to-compare-arrays-in-javascript/" rel="noopener noreferrer" target="_blank">Compare Arrays in JS
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-background-color-change-bg-color-tutorial/" rel="noopener noreferrer" target="_blank">HTML Background Color
+                        </a>
+                    </div>
+                    <div class="footer-col footer-col-3">
+                        <div class="footer-left">
+                            <a href="https://www.freecodecamp.org/news/how-to-lowercase-a-string-in-javascript-tolowercase-in-js/" rel="noopener noreferrer" target="_blank">Lowercase a String in JS
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/data-visualization-tools-guide/" rel="noopener noreferrer" target="_blank">Data Visualization Tools
+                            </a>
+                            <a href="https://freecodecamp.org/news/css-selectors-cheat-sheet-for-beginners/" rel="noopener noreferrer" target="_blank">CSS Selectors Cheatsheet
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/sort-dictionary-by-value-in-python/" rel="noopener noreferrer" target="_blank">Sort Dict by Value Python
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/how-to-change-text-color-in-html/" rel="noopener noreferrer" target="_blank">Change Text Color in HTML
+                            </a>
+                        </div>
+
+                        <div class="footer-right">
+                            <a href="https://www.freecodecamp.org/news/dictionary-comprehension-in-python-dict-comprehensions-explained/" rel="noopener noreferrer" target="_blank">Python Dict Comprehension
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/kernel-security-check-failure-how-to-restart-the-kernel-in-windows-10/" rel="noopener noreferrer" target="_blank">Restart Kernel in Windows
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/computer-programmer-salary-how-much-do-coders-make/" rel="noopener noreferrer" target="_blank">Computer Programmer Salary
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/how-to-dual-boot-windows-10-and-ubuntu-linux-dual-booting-tutorial/" rel="noopener noreferrer" target="_blank">Dual Boot Windows + Ubuntu
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/what-is-information-systems-definition-for-beginners/" rel="noopener noreferrer" target="_blank">What is Information Systems?
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="col-header" data-test-label="our-nonprofit">Our Charity</div>
+            <div class="footer-divider"></div>
+            <div class="our-nonprofit">
+                <a href="https://www.freecodecamp.org/news/about/" rel="noopener noreferrer" target="_blank" data-test-label="about">
+                    About
+                </a>
+                <a href="https://www.linkedin.com/school/free-code-camp/people/" rel="noopener noreferrer" target="_blank" data-test-label="alumni">
+                    Alumni Network
+                </a>
+                <a href="https://github.com/freeCodeCamp/" rel="noopener noreferrer" target="_blank" data-test-label="open-source">
+                    Open Source
+                </a>
+                <a href="https://www.freecodecamp.org/news/shop/" rel="noopener noreferrer" target="_blank" data-test-label="shop">
+                    Shop
+                </a>
+                <a href="https://www.freecodecamp.org/news/support/" rel="noopener noreferrer" target="_blank" data-test-label="support">
+                    Support
+                </a>
+                <a href="https://www.freecodecamp.org/news/sponsors/" rel="noopener noreferrer" target="_blank" data-test-label="sponsors">
+                    Sponsors
+                </a>
+                <a href="https://www.freecodecamp.org/news/academic-honesty-policy/" rel="noopener noreferrer" target="_blank" data-test-label="honesty">
+                    Academic Honesty
+                </a>
+                <a href="https://www.freecodecamp.org/news/code-of-conduct/" rel="noopener noreferrer" target="_blank" data-test-label="coc">
+                    Code of Conduct
+                </a>
+                <a href="https://www.freecodecamp.org/news/privacy-policy/" rel="noopener noreferrer" target="_blank" data-test-label="privacy">
+                    Privacy Policy
+                </a>
+                <a href="https://www.freecodecamp.org/news/terms-of-service/" rel="noopener noreferrer" target="_blank" data-test-label="tos">
+                    Terms of Service
+                </a>
+                <a href="https://www.freecodecamp.org/news/copyright-policy/" rel="noopener noreferrer" target="_blank" data-test-label="copyright">
+                    Copyright Policy
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+        </div>
+
+        
+        
+        
+
+        <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5D6RKKP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+        
+    <script defer="" src="./Web Scraping with Python – How to Scrape Data from Twitter using Tweepy and Snscrape_files/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon="{&quot;rayId&quot;:&quot;7d8157f1bd1f3c0d&quot;,&quot;token&quot;:&quot;bdb993c6dde44e178aabd9555e75e4f4&quot;,&quot;version&quot;:&quot;2023.4.0&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
+
+
+</body></html>
