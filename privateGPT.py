@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 from dotenv import load_dotenv
 
-from langchain.chains import RetrievalQA, ConversationChain
-from langchain.chains.conversation.memory import ConversationSummaryMemory
+from langchain.chains import ConversationalRetrievalChain
 from langchain import PromptTemplate
-
+from langchain.memory import ConversationBufferMemory
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.vectorstores import Chroma
@@ -26,12 +25,6 @@ target_source_chunks = int(os.environ.get('TARGET_SOURCE_CHUNKS',4))
 
 from constants import CHROMA_SETTINGS
 
-template = """Current conversation:
-{history}
-Human: {input}
-AI:"""
-
-prompt = PromptTemplate(template=template, input_variables=["input", "history"])
 
 def main():
     # Parse the command line arguments
@@ -51,12 +44,9 @@ def main():
             print(f"Model {model_type} not supported!")
             exit;
 
-    conversation = ConversationChain(
-    llm=llm,
-    memory=ConversationSummaryMemory(llm=llm),
-    prompt=prompt,
-    )
-    # qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents= not args.hide_source)
+  
+    memory = ConversationBufferMemory(memory_key="chat_history",input_key="question",output_key="answer", return_messages=True)
+    qa = ConversationalRetrievalChain.from_llm(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents= not args.hide_source,memory=memory)
     # Interactive questions and answers
     while True:
         query = input("\nEnter a query: ")
@@ -67,8 +57,8 @@ def main():
 
         # Get the answer from the chain
         start = time.time()
-        res = conversation.__call__(query,conversation.memory.buffer)
-        answer, docs = res['result'], [] if args.hide_source else res['source_documents']
+        res = qa({"question":query})
+        answer, docs = res['answer'], [] if args.hide_source else res['source_documents']
         end = time.time()
 
         # Print the result
